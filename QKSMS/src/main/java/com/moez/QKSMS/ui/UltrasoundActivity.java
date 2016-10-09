@@ -40,9 +40,7 @@ public class UltrasoundActivity extends Activity {
     }
 
     public void startSenderActivity() {
-        Intent intent = new Intent(this, TokenSenderActivity.class);
-        intent.putExtra("TEXT", getIntent().getStringExtra("TEXT"));
-        startActivity(intent);
+
     }
 
     public void startReceiverActivity(View view) {

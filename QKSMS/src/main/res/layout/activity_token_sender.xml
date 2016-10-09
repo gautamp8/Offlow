@@ -11,7 +11,8 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/tokenSenderActivityTitleText"
         android:id="@+id/tokenSenderActivityTitle"
@@ -36,10 +37,12 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="horizontal">
         <EditText
-            android:layout_width="260dp"
+            android:layout_width="0dp"
+            android:layout_weight="3"
             android:layout_height="wrap_content"
             android:hint="@string/tokenEditTextHint"
             android:id="@+id/tokenEditText"
@@ -50,7 +53,8 @@
             android:layout_toStartOf="@+id/generateTokenButton" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="@string/generateTokenButtonText"
             android:id="@+id/generateTokenButton"
@@ -63,7 +67,8 @@
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:hint="@string/locationEditTextHint"
         android:id="@+id/locationEditText"
         android:layout_centerVertical="true"
@@ -76,7 +81,8 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ripple"
         android:layout_width="match_parent"
-        android:layout_height="410dp"
+        android:layout_height="0dp"
+        android:layout_weight="6"
         android:layout_gravity="center"
         app:rb_color="#0099CC"
         app:rb_duration="3000"
@@ -95,17 +101,19 @@
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:text="@string/stopReceiveButtonText"
         android:id="@+id/stopSendButton"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:onClick="stopSendingToken"/>
+        android:onClick="stopSendingToken"
+        android:layout_weight="1"/>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/startReceiveButtonText"
-        android:id="@+id/startSendButton"
-        android:onClick="startReceiverActivity" />
+    <!--<Button-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:text="@string/startReceiveButtonText"-->
+        <!--android:id="@+id/startSendButton"-->
+        <!--android:onClick="startReceiverActivity" />-->
 </LinearLayout>

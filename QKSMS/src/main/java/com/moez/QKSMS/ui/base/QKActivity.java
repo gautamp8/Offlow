@@ -34,6 +34,7 @@ import com.moez.QKSMS.common.QKPreferences;
 import com.moez.QKSMS.common.utils.ColorUtils;
 import com.moez.QKSMS.enums.QKPreference;
 import com.moez.QKSMS.ui.ThemeManager;
+import com.moez.QKSMS.ui.TokenReceiverActivity;
 import com.moez.QKSMS.ui.settings.SettingsActivity;
 import com.moez.QKSMS.ui.view.QKTextView;
 
@@ -266,8 +267,10 @@ public abstract class QKActivity extends AppCompatActivity {
             case R.id.menu_settings:
                 startActivity(SettingsActivity.class);
                 return true;
-            case R.id.menu_changelog:
-                DialogHelper.showChangelog(this);
+            case R.id.menu_receive:
+//                DialogHelper.showChangelog(this);
+                Intent intent = new Intent(this, TokenReceiverActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.menu_donate:
                 DonationManager.getInstance(this).showDonateDialog();

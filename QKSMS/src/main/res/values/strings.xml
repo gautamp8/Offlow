@@ -4,7 +4,7 @@
     <string name="tokenReceiverActivityButtonText">Token Receiver</string>
     <string name="tokenSenderActivityButtonText">Token Sender</string>
     <string name="mainActivityTitle">Ultrasound Test</string>
-    <string name="tokenSenderActivityTitleText">Token Sender</string>
+    <string name="tokenSenderActivityTitleText">Ultrasound Token Sender</string>
     <string name="stopSendButtonText">Stop</string>
     <string name="startSendButtonText">Start</string>
     <string name="tokenEditTextHint">Insert token</string>
@@ -764,6 +764,7 @@
     <string name="date_just_now">Just now</string>
     <string name="compose_loading_attachment">Loading attachment</string>
     <string name="hint_no_messages">No messages yet.\nClick the + to send one!</string>
+    <string name="menu_receive">Receive Offline</string>
 
     <string-array name="resend_menu">
         <item>Resend</item>

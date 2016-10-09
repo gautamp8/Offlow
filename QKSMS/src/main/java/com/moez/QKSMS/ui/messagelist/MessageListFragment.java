@@ -62,6 +62,7 @@ import com.moez.QKSMS.transaction.SmsHelper;
 import com.moez.QKSMS.ui.MainActivity;
 import com.moez.QKSMS.ui.SwipeBackLayout;
 import com.moez.QKSMS.ui.ThemeManager;
+import com.moez.QKSMS.ui.TokenSenderActivity;
 import com.moez.QKSMS.ui.UltrasoundActivity;
 import com.moez.QKSMS.ui.base.QKFragment;
 import com.moez.QKSMS.ui.base.RecyclerCursorAdapter;
@@ -652,7 +653,7 @@ public class MessageListFragment extends QKFragment implements ActivityLauncher,
 
             if(Round(x,4)>8.0000){
                 Log.d("sensor", "=====LEFT====");
-                Intent intent = new Intent(getActivity(), UltrasoundActivity.class);
+                Intent intent = new Intent(getActivity(), TokenSenderActivity.class);
                 MessageItem lastMessage = mAdapter.getItem(mAdapter.getCount() - 1);
                 intent.putExtra("TEXT",lastMessage.mBody);
 //                if (mAdapter!=null) {
@@ -664,7 +665,15 @@ public class MessageListFragment extends QKFragment implements ActivityLauncher,
             }
             else if(Round(x,4)<-8.0000){
                 Log.d("sensor", "=====RIGHT====");
-
+                Intent intent = new Intent(getActivity(), TokenSenderActivity.class);
+                MessageItem lastMessage = mAdapter.getItem(mAdapter.getCount() - 1);
+                intent.putExtra("TEXT",lastMessage.mBody);
+//                if (mAdapter!=null) {
+//                    MessageItem lastMessage = mAdapter.getItem(mAdapter.getCount() - 1);
+//                    intent.putExtra("TEXT",lastMessage.getmBody());
+//                }
+                getActivity().startActivity(intent);
+                Log.e("MessageList",lastMessage.mBody);
             }
             else if(Round(y,4) < 8.0){
                 Log.d("sensor", "=====UP====");

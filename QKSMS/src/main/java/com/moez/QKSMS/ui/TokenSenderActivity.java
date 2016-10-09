@@ -38,6 +38,8 @@ public class TokenSenderActivity extends ActionBarActivity {
     private Button generateTokenButton;
     private TextView tokenEditText;
     EditText editLocation;
+    RippleBackground ripple;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,16 +51,18 @@ public class TokenSenderActivity extends ActionBarActivity {
         tokenEditText = (TextView) findViewById(R.id.tokenEditText);
         editLocation = (EditText) findViewById(R.id.locationEditText);
         tokenEditText.setText(getIntent().getStringExtra("TEXT"));
-        RippleBackground ripple = (RippleBackground) findViewById(R.id.ripple);
+        ripple = (RippleBackground) findViewById(R.id.ripple);
         ripple.startRippleAnimation();
 
-//      updateButtons();
-        startSendingToken();
         LocationManager locationManager = (LocationManager)
                 getSystemService(Context.LOCATION_SERVICE);
         LocationListener locationListener = new MyLocationListener();
         locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
+                LocationManager.GPS_PROVIDER, 5000, 1, locationListener);
+
+//      updateButtons();
+        startSendingToken();
+
     }
 
     @Override
@@ -105,6 +109,7 @@ public class TokenSenderActivity extends ActionBarActivity {
     private void stopSenderService() {
         Intent intent = new Intent(this, SenderService.class);
         stopService(intent);
+        ripple.stopRippleAnimation();
     }
 
     public void startReceiverActivity(View view) {
