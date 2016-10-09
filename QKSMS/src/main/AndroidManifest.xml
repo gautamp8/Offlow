@@ -33,6 +33,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_SMS" />
     <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".QKSMSApp"
@@ -79,7 +80,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
-
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:scheme="sms" />
@@ -94,7 +94,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="user"
             android:windowSoftInputMode="adjustResize" />
-
         <activity
             android:name=".ui.settings.SettingsActivity"
             android:screenOrientation="user"
@@ -374,7 +373,6 @@
             android:taskAffinity=""
             android:theme="@style/AppThemeLightDialog"
             android:windowSoftInputMode="adjustResize" />
-
         <activity
             android:name=".ui.mms.SlideshowActivity"
             android:screenOrientation="user" />
@@ -471,7 +469,6 @@
                 <action android:name="com.moez.QKSMS.MARK_SEEN" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".ui.widget.WidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -484,7 +481,6 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info" />
         </receiver>
-
         <receiver android:name=".receiver.NightModeAutoReceiver" />
         <receiver
             android:name="com.mariussoft.endlessjabber.sdk.EndlessJabberReceiver"
@@ -501,11 +497,9 @@
 
         <service android:name="com.mariussoft.endlessjabber.sdk.EndlessJabberWakefulService" />
         <service android:name=".service.DeleteOldMessagesService" />
-
         <service
             android:name=".receiver.UnreadBadgeService"
             android:exported="false" />
-
         <service android:name=".service.ShouldIAnswerService">
             <intent-filter>
                 <action android:name="com.moez.QKSMS.ShouldIAnswerService" />
@@ -572,6 +566,24 @@
         <meta-data
             android:name="com.sec.android.multiwindow.MINIMUM_SIZE_H"
             android:value="598dp" />
+
+        <activity android:name=".ui.UltrasoundActivity"></activity>
+        <activity
+            android:name=".ui.TokenSenderActivity"
+            android:label="@string/title_activity_token_sender"
+            android:parentActivityName=".ui.UltrasoundActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.UltrasoundActivity" />
+        </activity>
+        <activity
+            android:name=".ui.TokenReceiverActivity"
+            android:label="@string/title_activity_token_receiver"
+            android:parentActivityName=".ui.UltrasoundActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.UltrasoundActivity" />
+        </activity>
     </application>
 
 </manifest>

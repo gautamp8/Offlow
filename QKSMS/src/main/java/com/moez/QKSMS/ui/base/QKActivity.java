@@ -127,7 +127,9 @@ public abstract class QKActivity extends AppCompatActivity {
                     mToolbar.setPopupTheme(R.style.PopupTheme);
                     break;
             }
-            ((QKTextView) findViewById(R.id.toolbar_title)).setTextColor(ThemeManager.getTextOnColorPrimary());
+            QKTextView toolbar = (QKTextView) findViewById(R.id.toolbar_title);
+            if (toolbar!=null)
+            toolbar.setTextColor(ThemeManager.getTextOnColorPrimary());
         });
     }
 

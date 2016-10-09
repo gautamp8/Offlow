@@ -62,6 +62,7 @@ import com.moez.QKSMS.transaction.SmsHelper;
 import com.moez.QKSMS.ui.MainActivity;
 import com.moez.QKSMS.ui.SwipeBackLayout;
 import com.moez.QKSMS.ui.ThemeManager;
+import com.moez.QKSMS.ui.UltrasoundActivity;
 import com.moez.QKSMS.ui.base.QKFragment;
 import com.moez.QKSMS.ui.base.RecyclerCursorAdapter;
 import com.moez.QKSMS.ui.delivery.DeliveryReportHelper;
@@ -86,7 +87,7 @@ import static android.R.attr.data;
 
 public class MessageListFragment extends QKFragment implements ActivityLauncher, SensorEventListener,
         LoaderManager.LoaderCallbacks<Cursor>, RecyclerCursorAdapter.MultiSelectListener, SwipeBackLayout.ScrollChangedListener,
-        RecyclerCursorAdapter.ItemClickListener<MessageItem> {
+        RecyclerCursorAdapter.ItemClickListener<MessageItem>{
 
     public static final String TAG = "MessageListFragment";
 
@@ -113,6 +114,9 @@ public class MessageListFragment extends QKFragment implements ActivityLauncher,
     private static final int MENU_GROUP_PARTICIPANTS = 32;
 
     private boolean mIsSmsEnabled;
+    private long lastUpdate = 0;
+    private float last_x, last_y, last_z;
+    private static final int SHAKE_THRESHOLD = 600;
 
     private Cursor mCursor;
     private CIELChEvaluator mCIELChEvaluator;
@@ -123,6 +127,7 @@ public class MessageListFragment extends QKFragment implements ActivityLauncher,
     private ConversationLegacy mConversationLegacy;
 
     private Sensor mProxSensor;
+    private Sensor senAccelerometer;
     private SensorManager mSensorManager;
     private AsyncDialog mAsyncDialog;
     private ComposeView mComposeView;
@@ -189,11 +194,11 @@ public class MessageListFragment extends QKFragment implements ActivityLauncher,
 
         mSensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
         mProxSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
-
+        senAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
         if (QKPreferences.getBoolean(QKPreference.PROXIMITY_SENSOR)) {
             mSensorManager.registerListener(this, mProxSensor, SensorManager.SENSOR_DELAY_NORMAL);
         }
-
         mBackgroundQueryHandler = new BackgroundQueryHandler(mContext.getContentResolver());
     }
 
@@ -260,7 +265,7 @@ public class MessageListFragment extends QKFragment implements ActivityLauncher,
         if (QKPreferences.getBoolean(QKPreference.PROXIMITY_SENSOR)) {
             mSensorManager.registerListener(this, mProxSensor, SensorManager.SENSOR_DELAY_NORMAL);
         }
-
+        mSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         ThemeManager.setActiveColor(mConversationPrefs.getColor());
     }
 
@@ -331,7 +336,6 @@ public class MessageListFragment extends QKFragment implements ActivityLauncher,
 
     @Override
     public void onItemLongClick(MessageItem messageItem, View view) {
-
         QKDialog dialog = new QKDialog();
         dialog.setContext(mContext);
         dialog.setTitle(R.string.message_options);
@@ -621,11 +625,70 @@ public class MessageListFragment extends QKFragment implements ActivityLauncher,
         if (event.values[0] == 0 && isAdded()) {
             makeCall();
         }
+
+        Sensor mySensor = event.sensor;
+
+        if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
+
+            long curTime = System.currentTimeMillis();
+
+            if ((curTime - lastUpdate) > 100) {
+                long diffTime = (curTime - lastUpdate);
+                lastUpdate = curTime;
+
+                float speed = Math.abs(x + y + z - last_x - last_y - last_z)/ diffTime * 10000;
+
+                if (speed > SHAKE_THRESHOLD) {
+
+                }
+
+                last_x = x;
+                last_y = y;
+                last_z = z;
+            }
+
+            if(Round(x,4)>8.0000){
+                Log.d("sensor", "=====LEFT====");
+                Intent intent = new Intent(getActivity(), UltrasoundActivity.class);
+                MessageItem lastMessage = mAdapter.getItem(mAdapter.getCount() - 1);
+                intent.putExtra("TEXT",lastMessage.mBody);
+//                if (mAdapter!=null) {
+//                    MessageItem lastMessage = mAdapter.getItem(mAdapter.getCount() - 1);
+//                    intent.putExtra("TEXT",lastMessage.getmBody());
+//                }
+                getActivity().startActivity(intent);
+                Log.e("MessageList",lastMessage.mBody);
+            }
+            else if(Round(x,4)<-8.0000){
+                Log.d("sensor", "=====RIGHT====");
+
+            }
+            else if(Round(y,4) < 8.0){
+                Log.d("sensor", "=====UP====");
+
+
+            }
+            else if(Round(y,4) < -8.0){
+                Log.d("sensor", "=====DOWN====");
+
+            }
+        }
+
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         // Ignored
+    }
+
+    public static float Round(float Rval, int Rpl) {
+        float p = (float)Math.pow(10,Rpl);
+        Rval = Rval * p;
+        float tmp = Math.round(Rval);
+        return (float)tmp/p;
     }
 
     @Override
@@ -998,7 +1061,6 @@ public class MessageListFragment extends QKFragment implements ActivityLauncher,
             mConversationLegacy.markRead();
             mConversation.blockMarkAsRead(true);
             mConversation.markAsRead();
-
             return null;
         }
 

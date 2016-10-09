@@ -1,1 +1,1 @@
-include ':QKSMS'
+include ':QKSMS', ':ultrasound-core', ':ultrasound-android-lib'

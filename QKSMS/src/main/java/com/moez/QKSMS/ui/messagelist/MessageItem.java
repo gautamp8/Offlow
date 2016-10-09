@@ -209,6 +209,11 @@ public class MessageItem {
         }
     }
 
+    public String getmBody(){
+        Log.e("MESSAGE ITEM",mBody);
+        return mBody;
+    }
+
     private DeliveryStatus getDeliveryStatus(String deliveryReport) {
         DeliveryStatus result;
         if (deliveryReport == null || !mAddress.equals(mContext.getString(
