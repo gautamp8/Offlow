@@ -76,7 +76,7 @@ public class MessagingReceiver extends BroadcastReceiver {
             mAddress = sms.getDisplayOriginatingAddress();
             mDate = sms.getTimestampMillis();
 
-            if (mPrefs.getBoolean(SettingsFragment.SHOULD_I_ANSWER, false) &&
+            /*if (mPrefs.getBoolean(SettingsFragment.SHOULD_I_ANSWER, false) &&
                     PackageUtils.isAppInstalled(mContext, "org.mistergroup.muzutozvednout")) {
 
                 ShouldIAnswerBinder shouldIAnswerBinder = new ShouldIAnswerBinder();
@@ -107,7 +107,7 @@ public class MessagingReceiver extends BroadcastReceiver {
                 shouldIAnswerBinder.bind(context.getApplicationContext());
             } else {
                 insertMessageAndNotify();
-            }
+            }*/
         }
     }
 
