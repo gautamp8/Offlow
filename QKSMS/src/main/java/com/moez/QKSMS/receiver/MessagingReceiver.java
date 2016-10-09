@@ -50,10 +50,19 @@ public class MessagingReceiver extends BroadcastReceiver {
             if (messages.length == 1 || sms.isReplace()) {
                 mBody = sms.getDisplayMessageBody();
 
+                Log.d("Yoyo", "mBody = " + mBody);
+
                 String s = "Sent from your Twilio trial account -" ;
 
+                Log.d("Here", "Over here");
+
                 if (mBody.toLowerCase().contains(s.toLowerCase())) {
-                    mBody.replace(s,"");
+                    mBody = mBody.replaceAll(s,"");
+
+                    Log.d("Here", "Over here now!");
+
+                    Log.d("Yo", "Mbody = " + mBody);
+
                 }
 
             } else {
