@@ -31,22 +31,21 @@ import pl.edu.agh.mobilne.ultrasound.core.TokenGenerator;
 public class TokenSenderActivity extends ActionBarActivity {
 
     private static final String TAG = "TokenSenderActivity";
-    private boolean isStarted = false;
-
-//    private Button startSendingButton;
-//    private Button stopSendingButton;
-    private Button generateTokenButton;
-    private TextView tokenEditText;
     EditText editLocation;
     RippleBackground ripple;
+    private boolean isStarted = false;
+    private Button startSendingButton;
+    private Button stopSendingButton;
+    private Button generateTokenButton;
+    private TextView tokenEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_token_sender);
 
-//      startSendingButton = (Button) findViewById(R.id.startSendButton);
-//      stopSendingButton = (Button) findViewById(R.id.stopSendButton);
+        startSendingButton = (Button) findViewById(R.id.startSendButton);
+        stopSendingButton = (Button) findViewById(R.id.stopSendButton);
         generateTokenButton = (Button) findViewById(R.id.generateTokenButton);
         tokenEditText = (TextView) findViewById(R.id.tokenEditText);
         editLocation = (EditText) findViewById(R.id.locationEditText);
@@ -61,7 +60,21 @@ public class TokenSenderActivity extends ActionBarActivity {
                 LocationManager.GPS_PROVIDER, 5000, 1, locationListener);
 
 //      updateButtons();
-        startSendingToken();
+//        startSendingToken();
+
+        startSendingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSendingToken();
+            }
+        });
+
+        stopSendingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopSendingToken(null);
+            }
+        });
 
     }
 
@@ -148,8 +161,7 @@ public class TokenSenderActivity extends ActionBarActivity {
                     System.out.println(addresses.get(0).getLocality());
                     cityName = addresses.get(0).getLocality();
                 }
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             String s = longitude + "\n" + latitude;
@@ -157,12 +169,15 @@ public class TokenSenderActivity extends ActionBarActivity {
         }
 
         @Override
-        public void onProviderDisabled(String provider) {}
+        public void onProviderDisabled(String provider) {
+        }
 
         @Override
-        public void onProviderEnabled(String provider) {}
+        public void onProviderEnabled(String provider) {
+        }
 
         @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {}
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
     }
 }

@@ -4,17 +4,17 @@
     <string name="tokenReceiverActivityButtonText">Token Receiver</string>
     <string name="tokenSenderActivityButtonText">Token Sender</string>
     <string name="mainActivityTitle">Ultrasound Test</string>
-    <string name="tokenSenderActivityTitleText">Ultrasound Token Sender</string>
+    <string name="tokenSenderActivityTitleText">Ultrasonic Data Transfer</string>
     <string name="stopSendButtonText">Stop</string>
     <string name="startSendButtonText">Start</string>
     <string name="tokenEditTextHint">Insert token</string>
     <string name="locationEditTextHint">Geolocation</string>
     <string name="generateTokenButtonText">Encrypt</string>
-    <string name="title_activity_token_receiver">Token Receiver</string>
-    <string name="tokenValueTextViewText">"Received Value is..."</string>
-    <string name="stopReceiveButtonText">Stop</string>
-    <string name="startReceiveButtonText">Start Receiver</string>
-    <string name="tokenReceiverActivityTitleText">Token Receiver</string>
+    <string name="title_activity_token_receiver">Offline Receive</string>
+    <string name="tokenValueTextViewText">"Received Data is..."</string>
+    <string name="stopReceiveButtonText">Stop Receiving</string>
+    <string name="startReceiveButtonText">Start Receiving</string>
+    <string name="tokenReceiverActivityTitleText">Receving</string>
     <!--Slogan-->
     <string name="slogan">Love texting again.</string>
     <!--Text shown when a phone number cannot be found-->

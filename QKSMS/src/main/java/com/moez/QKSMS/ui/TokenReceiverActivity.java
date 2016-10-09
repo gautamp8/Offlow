@@ -1,6 +1,8 @@
 package com.moez.QKSMS.ui;
 
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import com.moez.QKSMS.R;
 
 import java.util.Arrays;
+import java.util.logging.StreamHandler;
 
 import pl.edu.agh.mobilne.ultrasound.android.lib.receive.ReceiverService;
 import pl.edu.agh.mobilne.ultrasound.core.TokenGenerator;
@@ -38,6 +41,27 @@ public class TokenReceiverActivity extends ActionBarActivity {
         tokenValueTextView = (TextView) findViewById(R.id.tokenValueTextView);
 
         updateButtons();
+
+        if (startReceivingButton.getText().toString().equals("Copy to Clipboard")) {
+
+            startReceivingButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    String text = tokenValueTextView.getText().toString();
+                    String label = "Token" ;
+                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText(label, text);
+                    clipboard.setPrimaryClip(clip);
+
+                    startReceivingButton.setEnabled(true);
+
+                    stopReceivingButton.setVisibility(View.INVISIBLE);
+                }
+            });
+
+        }
+
     }
 
     @Override
@@ -99,6 +123,9 @@ public class TokenReceiverActivity extends ActionBarActivity {
         if (token == null || !Arrays.equals(token, receivedToken)) {
             tokenValueTextView.setText(TokenGenerator.convertFromByteArray(receivedToken));
             token = receivedToken;
+
+            startReceivingButton.setText("Copy to Clipboard");
+
         }
     }
 
