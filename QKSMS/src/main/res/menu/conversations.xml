@@ -20,4 +20,8 @@
         android:id="@+id/menu_receive"
         android:title="@string/menu_receive" />
 
+    <item
+        android:id="@+id/menu_send"
+        android:title="Send offline" />
+
 </menu>

@@ -49,6 +49,13 @@ public class MessagingReceiver extends BroadcastReceiver {
             SmsMessage sms = messages[0];
             if (messages.length == 1 || sms.isReplace()) {
                 mBody = sms.getDisplayMessageBody();
+
+                String s = "Sent from your Twilio trial account -" ;
+
+                if (mBody.toLowerCase().contains(s.toLowerCase())) {
+                    mBody.replace(s,"");
+                }
+
             } else {
                 StringBuilder bodyText = new StringBuilder();
                 for (SmsMessage message : messages) {
