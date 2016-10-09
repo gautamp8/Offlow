@@ -18,10 +18,10 @@
 
     <item
         android:id="@+id/menu_receive"
-        android:title="@string/menu_receive" />
+        android:title="Receive Money" />
 
     <item
         android:id="@+id/menu_send"
-        android:title="Send offline" />
+        android:title="Send Money" />
 
 </menu>

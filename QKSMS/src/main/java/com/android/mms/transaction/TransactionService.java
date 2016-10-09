@@ -452,7 +452,7 @@ public class TransactionService extends Service implements Observer {
 
         if (!mobileDataEnabled) {
         if (LOCAL_LOGV) Log.v(TAG, "disabling mobile data");
-            Utils.setMobileDataEnabled(TransactionService.this, false);
+//gi            Utils.setMobileDataEnabled(TransactionService.this, false);
         }
     }
 

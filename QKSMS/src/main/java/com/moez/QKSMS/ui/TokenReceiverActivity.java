@@ -63,6 +63,8 @@ public class TokenReceiverActivity extends ActionBarActivity {
 
         updateButtons();
 
+        code = new Random().nextInt(9999);
+        tokenValueTextView.setText("TOTP Code = " + String.valueOf(code));
 
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
