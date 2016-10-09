@@ -45,4 +45,11 @@
         android:layout_above="@+id/stopReceiveButton"
         android:layout_centerHorizontal="true"
         android:onClick="startReceivingToken" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/linearLayout"/>
+
 </RelativeLayout>

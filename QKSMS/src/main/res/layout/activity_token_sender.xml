@@ -46,18 +46,6 @@
 
     </LinearLayout>
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:hint="@string/locationEditTextHint"
-        android:id="@+id/locationEditText"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/generateTokenButton"
-        android:layout_toStartOf="@+id/generateTokenButton" />
-
     <com.skyfishjy.library.RippleBackground xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ripple"

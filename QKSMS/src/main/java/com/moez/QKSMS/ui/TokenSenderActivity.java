@@ -1,15 +1,17 @@
 package com.moez.QKSMS.ui;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AlertDialog;
+import android.text.Editable;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,11 +36,14 @@ public class TokenSenderActivity extends ActionBarActivity {
     private static final String TAG = "TokenSenderActivity";
     EditText editLocation;
     RippleBackground ripple;
+    int code;
+    String totp;
     private boolean isStarted = false;
     private Button startSendingButton;
     private Button stopSendingButton;
     private Button generateTokenButton;
     private TextView tokenEditText;
+    private TextView totpCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,15 +54,34 @@ public class TokenSenderActivity extends ActionBarActivity {
         stopSendingButton = (Button) findViewById(R.id.stopSendButton);
         generateTokenButton = (Button) findViewById(R.id.generateTokenButton);
         tokenEditText = (TextView) findViewById(R.id.tokenEditText);
-        editLocation = (EditText) findViewById(R.id.locationEditText);
         tokenEditText.setText(getIntent().getStringExtra("TEXT"));
         ripple = (RippleBackground) findViewById(R.id.ripple);
 
-        LocationManager locationManager = (LocationManager)
-                getSystemService(Context.LOCATION_SERVICE);
-        LocationListener locationListener = new MyLocationListener();
-        locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER, 5000, 1, locationListener);
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        final EditText edittext = new EditText(getApplicationContext());
+        alert.setMessage("Enter Your TOTP Code");
+        alert.setTitle("TOTP Code");
+
+        alert.setView(edittext);
+
+        alert.setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //What ever you want to do with the value
+                Editable YouEditTextValue = edittext.getText();
+                totp = YouEditTextValue.toString();
+
+            }
+        });
+
+        alert.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // what ever you want to do with No option.
+            }
+        });
+
+        alert.show();
+
 
 //      updateButtons();
 //        startSendingToken();
@@ -108,7 +132,12 @@ public class TokenSenderActivity extends ActionBarActivity {
                 am.getStreamMaxVolume(AudioManager.STREAM_MUSIC),
                 0);
 
-        startSenderService(tokenEditText.getText().toString());
+        String a = tokenEditText.getText().toString();
+        String data = totp + "-" + a;
+        Log.d("Yo", "TOTP = " + totp);
+        Log.d("Yo", "A = " + a);
+        Log.d("Yo", "DATA = " + data);
+        startSenderService(data);
     }
 
     public void stopSendingToken(View view) {

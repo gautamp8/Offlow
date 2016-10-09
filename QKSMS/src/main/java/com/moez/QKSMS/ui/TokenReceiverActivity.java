@@ -7,9 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,7 +21,7 @@ import android.widget.Toast;
 import com.moez.QKSMS.R;
 
 import java.util.Arrays;
-import java.util.logging.StreamHandler;
+import java.util.Random;
 
 import pl.edu.agh.mobilne.ultrasound.android.lib.receive.ReceiverService;
 import pl.edu.agh.mobilne.ultrasound.core.TokenGenerator;
@@ -25,12 +29,25 @@ import pl.edu.agh.mobilne.ultrasound.core.TokenGenerator;
 
 public class TokenReceiverActivity extends ActionBarActivity {
 
+    String totp;
+    int code;
+    int INTERVAL;
+    Handler mHandler;
     private boolean isStarted = false;
     private byte[] token;
-
     private Button startReceivingButton;
     private Button stopReceivingButton;
     private TextView tokenValueTextView;
+    private BroadcastReceiver serviceBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            if (bundle != null) {
+                byte[] tokenByteArray = bundle.getByteArray(ReceiverService.BYTE_BUFFER_KEY);
+                updateToken(tokenByteArray);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,29 +58,21 @@ public class TokenReceiverActivity extends ActionBarActivity {
         stopReceivingButton = (Button) findViewById(R.id.stopReceiveButton);
         tokenValueTextView = (TextView) findViewById(R.id.tokenValueTextView);
 
+
         updateButtons();
 
-        if (startReceivingButton.getText().toString().equals("Copy to Clipboard")) {
 
-            startReceivingButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
 
-                    String text = tokenValueTextView.getText().toString();
-                    String label = "Token" ;
-                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                    ClipData clip = ClipData.newPlainText(label, text);
-                    clipboard.setPrimaryClip(clip);
+                code = new Random().nextInt(9999);
+                tokenValueTextView.setText("TOTP Code = " + String.valueOf(code));
 
-                    startReceivingButton.setEnabled(true);
+                handler.postDelayed(this, 60000); //now is every 1 minute
+            }
+        }, 60000); //Every 60000 ms (1 minute)
 
-                    stopReceivingButton.setVisibility(View.INVISIBLE);
-
-                    Toast.makeText(getApplicationContext(), "Text has been copied to clipboard.", Toast.LENGTH_LONG).show();
-                }
-            });
-
-        }
 
     }
 
@@ -124,22 +133,66 @@ public class TokenReceiverActivity extends ActionBarActivity {
 
     private void updateToken(byte[] receivedToken) {
         if (token == null || !Arrays.equals(token, receivedToken)) {
-            tokenValueTextView.setText(TokenGenerator.convertFromByteArray(receivedToken));
-            token = receivedToken;
+            //tokenValueTextView.setText(TokenGenerator.convertFromByteArray(receivedToken));
+            //token = receivedToken;
 
-            startReceivingButton.setText("Copy to Clipboard");
+            String data = TokenGenerator.convertFromByteArray(receivedToken);
+
+            int n = data.indexOf('-');
+
+            int l = data.length();
+
+            String t = data.substring(0, n);
+            String a = data.substring(n + 1, l);
+
+            int as = Integer.valueOf(t);
+
+            Log.d("yo", "t = " + t);
+            Log.d("yo", "a = " + a);
+            Log.d("yo", "n = " + n);
+            Log.d("yo", "l = " + l);
+            Log.d("yo", "totp = " + totp);
+
+            if (as == code) {
+                tokenValueTextView.setText(a);
+                startReceivingButton.setText("Copy to Clipboard");
+                Log.d("yo", "in if");
+
+
+                Button bt = new Button(this);
+                bt.setText("Copy to Clipboard");
+                bt.setLayoutParams(new ActionBar.LayoutParams(ActionBar.LayoutParams.FILL_PARENT,
+                        ActionBar.LayoutParams.WRAP_CONTENT));
+                ViewGroup linearLayout = (ViewGroup) findViewById(R.id.linearLayout);
+
+                linearLayout.addView(bt);
+
+                bt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        String text = a;
+                        String label = "Token";
+                        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                        ClipData clip = ClipData.newPlainText(label, text);
+                        clipboard.setPrimaryClip(clip);
+
+                        startReceivingButton.setEnabled(true);
+
+                        stopReceivingButton.setVisibility(View.INVISIBLE);
+
+                        Toast.makeText(getApplicationContext(), "Text has been copied to clipboard.", Toast.LENGTH_LONG).show();
+
+
+                    }
+                });
+
+
+            } else {
+                Toast.makeText(getApplicationContext(), "Incorrect TOTP was entered. Please try again.", Toast.LENGTH_LONG).show();
+                Log.d("yo", "in else");
+            }
 
         }
     }
-
-    private BroadcastReceiver serviceBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Bundle bundle = intent.getExtras();
-            if (bundle != null) {
-                byte[] tokenByteArray = bundle.getByteArray(ReceiverService.BYTE_BUFFER_KEY);
-                updateToken(tokenByteArray);
-            }
-        }
-    };
 }
