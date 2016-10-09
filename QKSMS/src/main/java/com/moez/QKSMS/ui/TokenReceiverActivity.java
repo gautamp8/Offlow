@@ -38,6 +38,7 @@ public class TokenReceiverActivity extends ActionBarActivity {
     private Button startReceivingButton;
     private Button stopReceivingButton;
     private TextView tokenValueTextView;
+    private TextView title22;
     private BroadcastReceiver serviceBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -57,6 +58,7 @@ public class TokenReceiverActivity extends ActionBarActivity {
         startReceivingButton = (Button) findViewById(R.id.startReceiveButton);
         stopReceivingButton = (Button) findViewById(R.id.stopReceiveButton);
         tokenValueTextView = (TextView) findViewById(R.id.tokenValueTextView);
+        title22 = (TextView) findViewById(R.id.title22);
 
 
         updateButtons();
@@ -107,6 +109,10 @@ public class TokenReceiverActivity extends ActionBarActivity {
         isStarted = true;
         updateButtons();
         startReceiverService();
+
+        tokenValueTextView.setText("");
+        title22.setText("Awaiting Transfer...");
+
     }
 
     public void stopReceivingToken(View view) {
@@ -154,8 +160,7 @@ public class TokenReceiverActivity extends ActionBarActivity {
             Log.d("yo", "totp = " + totp);
 
             if (as == code) {
-                tokenValueTextView.setText(a);
-                startReceivingButton.setText("Copy to Clipboard");
+                tokenValueTextView.setText("Amount : " + a);
                 Log.d("yo", "in if");
 
 
@@ -181,11 +186,13 @@ public class TokenReceiverActivity extends ActionBarActivity {
 
                         stopReceivingButton.setVisibility(View.INVISIBLE);
 
-                        Toast.makeText(getApplicationContext(), "Text has been copied to clipboard.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Copied to clipboard.", Toast.LENGTH_LONG).show();
 
 
                     }
                 });
+
+                title22.setText("Payment Received");
 
 
             } else {
