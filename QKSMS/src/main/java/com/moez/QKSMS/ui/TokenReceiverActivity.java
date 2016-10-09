@@ -29,16 +29,16 @@ import pl.edu.agh.mobilne.ultrasound.core.TokenGenerator;
 
 public class TokenReceiverActivity extends ActionBarActivity {
 
+    public Button startReceivingButton;
+    public Button stopReceivingButton;
+    public TextView tokenValueTextView;
+    public TextView title22;
     String totp;
     int code;
     int INTERVAL;
     Handler mHandler;
     private boolean isStarted = false;
     private byte[] token;
-    private Button startReceivingButton;
-    private Button stopReceivingButton;
-    private TextView tokenValueTextView;
-    private TextView title22;
     private BroadcastReceiver serviceBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -58,7 +58,7 @@ public class TokenReceiverActivity extends ActionBarActivity {
         startReceivingButton = (Button) findViewById(R.id.startReceiveButton);
         stopReceivingButton = (Button) findViewById(R.id.stopReceiveButton);
         tokenValueTextView = (TextView) findViewById(R.id.tokenValueTextView);
-        title22 = (TextView) findViewById(R.id.title22);
+        title22 = (TextView) findViewById(R.id.title23);
 
 
         updateButtons();
@@ -74,6 +74,8 @@ public class TokenReceiverActivity extends ActionBarActivity {
                 tokenValueTextView.setText("TOTP Code = " + String.valueOf(code));
 
                 handler.postDelayed(this, 60000); //now is every 1 minute
+
+                Log.d("TOPT", "New TOTP = " + totp);
             }
         }, 60000); //Every 60000 ms (1 minute)
 
@@ -110,15 +112,18 @@ public class TokenReceiverActivity extends ActionBarActivity {
     public void startReceivingToken(View view) {
         isStarted = true;
         updateButtons();
-        startReceiverService();
-
         tokenValueTextView.setText("");
         title22.setText("Awaiting Transfer...");
+        startReceiverService();
+
 
     }
 
     public void stopReceivingToken(View view) {
         isStarted = false;
+
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
 
         updateButtons();
         stopReceiverService();
