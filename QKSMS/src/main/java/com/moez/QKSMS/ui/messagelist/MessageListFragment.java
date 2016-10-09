@@ -498,9 +498,9 @@ public class MessageListFragment extends QKFragment implements ActivityLauncher,
     }
 
     private void makeCall() {
-        Intent openDialerIntent = new Intent(Intent.ACTION_CALL);
-        openDialerIntent.setData(Uri.parse("tel:" + mConversationLegacy.getAddress()));
-        startActivity(openDialerIntent);
+//        Intent openDialerIntent = new Intent(Intent.ACTION_CALL);
+//        openDialerIntent.setData(Uri.parse("tel:" + mConversationLegacy.getAddress()));
+//        startActivity(openDialerIntent);
     }
 
     private void vibrateOnConversationStateChanged(final boolean notificationMuted) {
@@ -623,9 +623,9 @@ public class MessageListFragment extends QKFragment implements ActivityLauncher,
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (event.values[0] == 0 && isAdded()) {
-            makeCall();
-        }
+//        if (event.values[0] == 0 && isAdded()) {
+//            makeCall();
+//        }
 
         Sensor mySensor = event.sensor;
 

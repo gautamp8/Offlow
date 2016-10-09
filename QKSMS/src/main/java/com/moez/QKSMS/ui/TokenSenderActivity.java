@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
@@ -18,7 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.google.android.gms.location.LocationRequest;
 
 import com.moez.QKSMS.R;
 import com.skyfishjy.library.RippleBackground;
@@ -31,19 +32,17 @@ import pl.edu.agh.mobilne.ultrasound.android.lib.send.SenderService;
 import pl.edu.agh.mobilne.ultrasound.core.TokenGenerator;
 
 
-public class TokenSenderActivity extends ActionBarActivity {
+public class TokenSenderActivity extends ActionBarActivity{
 
     private static final String TAG = "TokenSenderActivity";
-    EditText editLocation;
-    RippleBackground ripple;
-    int code;
-    String totp;
     private boolean isStarted = false;
     private Button startSendingButton;
     private Button stopSendingButton;
     private Button generateTokenButton;
     private TextView tokenEditText;
-    private TextView totpCode;
+    EditText editLocation;
+    RippleBackground ripple;
+    private String totp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +53,8 @@ public class TokenSenderActivity extends ActionBarActivity {
         stopSendingButton = (Button) findViewById(R.id.stopSendButton);
         generateTokenButton = (Button) findViewById(R.id.generateTokenButton);
         tokenEditText = (TextView) findViewById(R.id.tokenEditText);
+        editLocation = (EditText) findViewById(R.id.locationEditText);
+        editLocation.setText("42.3314270,-83.0457540");
         tokenEditText.setText(getIntent().getStringExtra("TEXT"));
         ripple = (RippleBackground) findViewById(R.id.ripple);
 
@@ -70,7 +71,6 @@ public class TokenSenderActivity extends ActionBarActivity {
                 //What ever you want to do with the value
                 Editable YouEditTextValue = edittext.getText();
                 totp = YouEditTextValue.toString();
-
             }
         });
 
@@ -83,24 +83,15 @@ public class TokenSenderActivity extends ActionBarActivity {
         alert.show();
 
 
-//      updateButtons();
-//        startSendingToken();
+        startSendingButton.setOnClickListener(v -> {
+            startSendingToken();
+            ripple.startRippleAnimation();
 
-        startSendingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startSendingToken();
-                ripple.startRippleAnimation();
-
-            }
         });
 
-        stopSendingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stopSendingToken(null);
-                ripple.stopRippleAnimation();
-            }
+        stopSendingButton.setOnClickListener(v -> {
+            stopSendingToken(null);
+            ripple.stopRippleAnimation();
         });
 
     }
@@ -170,55 +161,5 @@ public class TokenSenderActivity extends ActionBarActivity {
         Intent intent = new Intent(this, TokenReceiverActivity.class);
         startActivity(intent);
     }
-//    private void updateButtons() {
-////        startSendingButton.setEnabled(!isStarted);
-////        stopSendingButton.setEnabled(isStarted);
-//        generateTokenButton.setEnabled(!isStarted);
-//    }
 
-    private class MyLocationListener implements LocationListener {
-
-        @Override
-        public void onLocationChanged(Location loc) {
-            editLocation.setText("");
-//            pb.setVisibility(View.INVISIBLE);
-            Toast.makeText(
-                    getBaseContext(),
-                    "Location changed: Latitude: " + loc.getLatitude() + " Longitude: "
-                            + loc.getLongitude(), Toast.LENGTH_SHORT).show();
-            String longitude = "Longitude: " + loc.getLongitude();
-            Log.v(TAG, longitude);
-            String latitude = "Latitude: " + loc.getLatitude();
-            Log.v(TAG, latitude);
-
-        /*------- To get city name from coordinates -------- */
-            String cityName = null;
-            Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
-            List<Address> addresses;
-            try {
-                addresses = gcd.getFromLocation(loc.getLatitude(),
-                        loc.getLongitude(), 1);
-                if (addresses.size() > 0) {
-                    System.out.println(addresses.get(0).getLocality());
-                    cityName = addresses.get(0).getLocality();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            String s = longitude + "\n" + latitude;
-            editLocation.setText(s);
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-        }
-    }
 }

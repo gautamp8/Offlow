@@ -115,4 +115,6 @@ dependencies {
     compile project(':ultrasound-android-lib')
     compile project(':ultrasound-core')
     compile 'com.skyfishjy.ripplebackground:library:1.0.1'
+    compile 'com.google.android.gms:play-services-location:8.4.0'
+
 }

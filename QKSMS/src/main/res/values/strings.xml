@@ -8,7 +8,7 @@
     <string name="stopSendButtonText">Stop</string>
     <string name="startSendButtonText">Start</string>
     <string name="tokenEditTextHint">Insert token</string>
-    <string name="locationEditTextHint">Geolocation</string>
+    <string name="totpEditTextHint">TOTP</string>
     <string name="generateTokenButtonText">Encrypt</string>
     <string name="title_activity_token_receiver">Offline Receive</string>
     <string name="tokenValueTextViewText">"Received Data is..."</string>
