@@ -766,6 +766,7 @@
     <string name="hint_no_messages">No messages yet.\nClick the + to send one!</string>
     <string name="menu_receive">Receive Offline</string>
     <string name="send_offline">Send offline</string>
+    <string name="input_data">Input Data</string>
 
     <string-array name="resend_menu">
         <item>Resend</item>

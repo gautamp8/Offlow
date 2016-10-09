@@ -17,6 +17,7 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -362,6 +363,22 @@ public class MessageListAdapter extends RecyclerCursorAdapter<MessageListViewHol
         SpannableStringBuilder buf = new SpannableStringBuilder();
 
         String body = messageItem.mBody;
+
+        Log.d("Yoyo", "mBody = " + body);
+
+        String s = "Sent from your Twilio trial account -" ;
+
+        Log.d("Here", "Over here");
+
+        if (body.toLowerCase().contains(s.toLowerCase())) {
+            body = body.replaceAll(s,"");
+
+            Log.d("Here", "Over here now!");
+
+            Log.d("Yo", "Mbody = " + body);
+
+        }
+
 
         if (messageItem.mMessageType == PduHeaders.MESSAGE_TYPE_NOTIFICATION_IND) {
             String msgSizeText = mContext.getString(R.string.message_size_label)

@@ -7,6 +7,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -51,7 +52,6 @@ public class TokenSenderActivity extends ActionBarActivity {
         editLocation = (EditText) findViewById(R.id.locationEditText);
         tokenEditText.setText(getIntent().getStringExtra("TEXT"));
         ripple = (RippleBackground) findViewById(R.id.ripple);
-        ripple.startRippleAnimation();
 
         LocationManager locationManager = (LocationManager)
                 getSystemService(Context.LOCATION_SERVICE);
@@ -66,6 +66,8 @@ public class TokenSenderActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 startSendingToken();
+                ripple.startRippleAnimation();
+
             }
         });
 
@@ -73,6 +75,7 @@ public class TokenSenderActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 stopSendingToken(null);
+                ripple.stopRippleAnimation();
             }
         });
 
@@ -96,6 +99,15 @@ public class TokenSenderActivity extends ActionBarActivity {
         isStarted = true;
 
 //        updateButtons();
+
+        AudioManager am =
+                (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+
+        am.setStreamVolume(
+                AudioManager.STREAM_MUSIC,
+                am.getStreamMaxVolume(AudioManager.STREAM_MUSIC),
+                0);
+
         startSenderService(tokenEditText.getText().toString());
     }
 

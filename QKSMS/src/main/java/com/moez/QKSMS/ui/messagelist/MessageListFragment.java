@@ -652,7 +652,7 @@ public class MessageListFragment extends QKFragment implements ActivityLauncher,
             }
 
             if(Round(x,4)>8.0000){
-                Log.d("sensor", "=====LEFT====");
+                //Log.d("sensor", "=====LEFT====");
                 Intent intent = new Intent(getActivity(), TokenSenderActivity.class);
                 MessageItem lastMessage = mAdapter.getItem(mAdapter.getCount() - 1);
                 intent.putExtra("TEXT",lastMessage.mBody);
@@ -675,7 +675,7 @@ public class MessageListFragment extends QKFragment implements ActivityLauncher,
                 getActivity().startActivity(intent);
                 Log.e("MessageList",lastMessage.mBody);
             }
-            else if(Round(y,4) < 8.0){
+            else if(Round(y,4) > 8.0){
                 Log.d("sensor", "=====UP====");
 
 

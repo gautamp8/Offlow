@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.moez.QKSMS.R;
 
@@ -57,6 +58,8 @@ public class TokenReceiverActivity extends ActionBarActivity {
                     startReceivingButton.setEnabled(true);
 
                     stopReceivingButton.setVisibility(View.INVISIBLE);
+
+                    Toast.makeText(getApplicationContext(), "Text has been copied to clipboard.", Toast.LENGTH_LONG).show();
                 }
             });
 
